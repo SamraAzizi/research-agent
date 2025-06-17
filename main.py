@@ -1,6 +1,19 @@
+from dotenv import load_dotenv
+from src.workflow import Workflow
+
+load_dotenv()
+
+
 def main():
-    print("Hello from twoai!")
+    workflow = Workflow()
+    print("Developer Tools Research Agent")
 
+    while True:
+        query = input("\n🔍 Developer Tools Query: ").strip()
+        if query.lower() in {"quit", "exit"}:
+            break
 
-if __name__ == "__main__":
-    main()
+        if query:
+            result = workflow.run(query)
+            print(f"\n📊 Results for: {query}")
+            print("=" * 60)
