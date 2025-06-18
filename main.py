@@ -31,3 +31,19 @@ def main():
                     print(
                         f"   💻 Language Support: {', '.join(company.language_support[:5])}"
                     )
+
+                    if company.api_available is not None:
+                    api_status = (
+                        "✅ Available" if company.api_available else "❌ Not Available"
+                    )
+                    print(f"   🔌 API: {api_status}")
+
+                if company.integration_capabilities:
+                    print(
+                        f"   🔗 Integrations: {', '.join(company.integration_capabilities[:4])}"
+                    )
+
+                if company.description and company.description != "Analysis failed":
+                    print(f"   📝 Description: {company.description}")
+
+                print()
