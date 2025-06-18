@@ -32,7 +32,7 @@ def main():
                         f"   💻 Language Support: {', '.join(company.language_support[:5])}"
                     )
 
-                    if company.api_available is not None:
+                if company.api_available is not None:
                     api_status = (
                         "✅ Available" if company.api_available else "❌ Not Available"
                     )
@@ -47,3 +47,12 @@ def main():
                     print(f"   📝 Description: {company.description}")
 
                 print()
+
+            if result.analysis:
+                print("Developer Recommendations: ")
+                print("-" * 40)
+                print(result.analysis)
+
+
+if __name__ == "__main__":
+    main()
