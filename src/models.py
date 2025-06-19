@@ -27,3 +27,11 @@ class CompanyInfo(BaseModel):
     language_support: List[str] = []
     integration_capabilities: List[str] = []
     developer_experience_rating: Optional[str] = None  # Poor, Good, Excellent
+
+
+class ResearchState(BaseModel):
+    query: str
+    extracted_tools: List[str] = []  # Tools extracted from articles
+    companies: List[CompanyInfo] = []
+    search_results: List[Dict[str, Any]] = []
+    analysis: Optional[str] = None
