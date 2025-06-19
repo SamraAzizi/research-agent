@@ -32,3 +32,7 @@ class FirecrawlService:
                 url,
                 formats=["markdown"]
             )
+            return result
+        except Exception as e:
+            print(e)
+            return None
