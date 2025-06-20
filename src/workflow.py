@@ -36,3 +36,15 @@ class Workflow:
             scraped = self.firecrawl.scrape_company_pages(url)
             if scraped:
                 all_content + scraped.markdown[:1500] + "\n\n"
+                messages = [
+            SystemMessage(content=self.prompts.TOOL_EXTRACTION_SYSTEM),
+            HumanMessage(content=self.prompts.tool_extraction_user(state.query, all_content))
+        ]
+
+        try:
+            response = self.llm.invoke(messages)
+            tool_names = [
+                name.strip()
+                for name in response.content.strip().split("\n")
+                if name.strip()
+            ]
