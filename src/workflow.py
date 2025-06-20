@@ -48,3 +48,18 @@ class Workflow:
                 for name in response.content.strip().split("\n")
                 if name.strip()
             ]
+
+
+print(f"Extracted tools: {', '.join(tool_names[:5])}")
+            return {"extracted_tools": tool_names}
+        except Exception as e:
+            print(e)
+            return {"extracted_tools": []}
+
+    def _analyze_company_content(self, company_name: str, content: str) -> CompanyAnalysis:
+        structured_llm = self.llm.with_structured_output(CompanyAnalysis)
+
+        messages = [
+            SystemMessage(content=self.prompts.TOOL_ANALYSIS_SYSTEM),
+            HumanMessage(content=self.prompts.tool_analysis_user(company_name, content))
+        ]
