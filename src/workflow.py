@@ -23,3 +23,16 @@ class Workflow:
         graph.add_edge("research", "analyze")
         graph.add_edge("analyze", END)
         return graph.compile()
+    
+    def _extract_tools_step(self, state: ResearchState) -> Dict[str, Any]:
+        print(f"🔍 Finding articles about: {state.query}")
+
+        article_query = f"{state.query} tools comparison best alternatives"
+        search_results = self.firecrawl.search_companies(article_query, num_results=3)
+
+        all_content = ""
+        for result in search_results.data:
+            url = result.get("url", "")
+            scraped = self.firecrawl.scrape_company_pages(url)
+            if scraped:
+                all_content + scraped.markdown[:1500] + "\n\n"
