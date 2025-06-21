@@ -6,6 +6,7 @@ from .models import ResearchState, CompanyInfo, CompanyAnalysis
 from .firecrawl import FirecrawlService
 from .prompts import DeveloperToolsPrompts
 
+
 class Workflow:
     def __init__(self):
         self.firecrawl = FirecrawlService()
@@ -23,7 +24,7 @@ class Workflow:
         graph.add_edge("research", "analyze")
         graph.add_edge("analyze", END)
         return graph.compile()
-    
+
     def _extract_tools_step(self, state: ResearchState) -> Dict[str, Any]:
         print(f"🔍 Finding articles about: {state.query}")
 
@@ -36,7 +37,8 @@ class Workflow:
             scraped = self.firecrawl.scrape_company_pages(url)
             if scraped:
                 all_content + scraped.markdown[:1500] + "\n\n"
-                messages = [
+
+        messages = [
             SystemMessage(content=self.prompts.TOOL_EXTRACTION_SYSTEM),
             HumanMessage(content=self.prompts.tool_extraction_user(state.query, all_content))
         ]
@@ -48,9 +50,7 @@ class Workflow:
                 for name in response.content.strip().split("\n")
                 if name.strip()
             ]
-
-
-print(f"Extracted tools: {', '.join(tool_names[:5])}")
+            print(f"Extracted tools: {', '.join(tool_names[:5])}")
             return {"extracted_tools": tool_names}
         except Exception as e:
             print(e)
@@ -63,6 +63,7 @@ print(f"Extracted tools: {', '.join(tool_names[:5])}")
             SystemMessage(content=self.prompts.TOOL_ANALYSIS_SYSTEM),
             HumanMessage(content=self.prompts.tool_analysis_user(company_name, content))
         ]
+
         try:
             analysis = structured_llm.invoke(messages)
             return analysis
@@ -89,8 +90,7 @@ print(f"Extracted tools: {', '.join(tool_names[:5])}")
                 result.get("metadata", {}).get("title", "Unknown")
                 for result in search_results.data
             ]
-
-            else:
+        else:
             tool_names = extracted_tools[:4]
 
         print(f"🔬 Researching specific tools: {', '.join(tool_names)}")
@@ -116,8 +116,7 @@ print(f"Extracted tools: {', '.join(tool_names[:5])}")
                     content = scraped.markdown
                     analysis = self._analyze_company_content(company.name, content)
 
-
-company.pricing_model = analysis.pricing_model
+                    company.pricing_model = analysis.pricing_model
                     company.is_open_source = analysis.is_open_source
                     company.tech_stack = analysis.tech_stack
                     company.description = analysis.description
@@ -131,3 +130,20 @@ company.pricing_model = analysis.pricing_model
 
     def _analyze_step(self, state: ResearchState) -> Dict[str, Any]:
         print("Generating recommendations")
+
+        company_data = ", ".join([
+            company.json() for company in state.companies
+        ])
+
+        messages = [
+            SystemMessage(content=self.prompts.RECOMMENDATIONS_SYSTEM),
+            HumanMessage(content=self.prompts.recommendations_user(state.query, company_data))
+        ]
+
+        response = self.llm.invoke(messages)
+        return {"analysis": response.content}
+
+    def run(self, query: str) -> ResearchState:
+        initial_state = ResearchState(query=query)
+        final_state = self.workflow.invoke(initial_state)
+        return ResearchState(**final_state)
