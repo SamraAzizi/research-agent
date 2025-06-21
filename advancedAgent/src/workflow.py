@@ -115,3 +115,19 @@ print(f"Extracted tools: {', '.join(tool_names[:5])}")
                 if scraped:
                     content = scraped.markdown
                     analysis = self._analyze_company_content(company.name, content)
+
+
+company.pricing_model = analysis.pricing_model
+                    company.is_open_source = analysis.is_open_source
+                    company.tech_stack = analysis.tech_stack
+                    company.description = analysis.description
+                    company.api_available = analysis.api_available
+                    company.language_support = analysis.language_support
+                    company.integration_capabilities = analysis.integration_capabilities
+
+                companies.append(company)
+
+        return {"companies": companies}
+
+    def _analyze_step(self, state: ResearchState) -> Dict[str, Any]:
+        print("Generating recommendations")
