@@ -63,3 +63,29 @@ print(f"Extracted tools: {', '.join(tool_names[:5])}")
             SystemMessage(content=self.prompts.TOOL_ANALYSIS_SYSTEM),
             HumanMessage(content=self.prompts.tool_analysis_user(company_name, content))
         ]
+        try:
+            analysis = structured_llm.invoke(messages)
+            return analysis
+        except Exception as e:
+            print(e)
+            return CompanyAnalysis(
+                pricing_model="Unknown",
+                is_open_source=None,
+                tech_stack=[],
+                description="Failed",
+                api_available=None,
+                language_support=[],
+                integration_capabilities=[],
+            )
+
+
+    def _research_step(self, state: ResearchState) -> Dict[str, Any]:
+        extracted_tools = getattr(state, "extracted_tools", [])
+
+        if not extracted_tools:
+            print("⚠️ No extracted tools found, falling back to direct search")
+            search_results = self.firecrawl.search_companies(state.query, num_results=4)
+            tool_names = [
+                result.get("metadata", {}).get("title", "Unknown")
+                for result in search_results.data
+            ]
