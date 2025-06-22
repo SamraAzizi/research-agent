@@ -6,3 +6,27 @@ from langchain_openai import ChatOpenAI
 from dotenv import load_dotenv
 import asyncio
 import os
+
+load_dotenv()
+
+model = ChatOpenAI(
+    model="gpt-4o-mini",
+    temperature=0,
+    openai_api_key=os.getenv("OPENAI_API_KEY")
+)
+
+server_params = StdioServerParameters(
+    command="npx",
+    env={
+        "FIRECRAWL_API_KEY": os.getenv("FIRECRAWL_API_KEY"),
+    },
+    args=["firecrawl-mcp"]
+)
+
+
+async def main():
+    async with stdio_client(server_params) as (read, write):
+        async with ClientSession(read, write) as session:
+            await session.initialize()
+            tools = await load_mcp_tools(session)
+            agent = create_react_agent(model, tools)
