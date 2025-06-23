@@ -88,4 +88,21 @@ quit
 - Recommendation Generation: Using all structured insights, the model gives a short, actionable recommendation tailored to developers.
 
 
-##
+## Example Output
+📊 Results for: backend deployment platforms
+============================================================
+
+1. 🏢 Railway
+   🌐 Website: https://railway.app
+   💰 Pricing: Freemium
+   📖 Open Source: False
+   🛠️  Tech Stack: Node.js, PostgreSQL, Docker
+   💻 Language Support: JavaScript, Python
+   🔌 API: ✅ Available
+   🔗 Integrations: GitHub, Vercel
+
+   📝 Description: A platform to deploy backend apps quickly with built-in databases and CI.
+
+Developer Recommendations:
+----------------------------------------
+Railway offers the easiest setup with freemium pricing and GitHub integration. Choose it if you're prototyping or need speed. Consider pricing if you scale.
