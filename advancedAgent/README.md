@@ -13,3 +13,46 @@ This is an advanced, AI-powered CLI tool that helps developers discover, compare
 
 
 ## 📁 Project Structure
+```bash
+.
+├── main.py                 # CLI interface
+├── .env                    # API keys (not committed)
+├── pyproject.toml          # uv project configuration
+└── src/
+    ├── firecrawl.py        # Firecrawl search & scrape integration
+    ├── models.py           # Typed models for state and results
+    ├── prompts.py          # Prompt templates for structured LLM output
+    └── workflow.py         # LangGraph-powered agent pipeline
+
+```
+
+
+
+## ⚙️ Installation
+
+1. **Clone this repo**
+
+   ```bash
+   git clone https://github.com/your-username/advanced-devtools-agent.git
+   cd advanced-devtools-agent
+   ```
+2. Install Python dependencies
+We use uv for fast dependency management:
+
+```bash
+uv init .
+uv add langchain-openai langgraph firecrawl python-dotenv pydantic
+```
+
+## Environment Setup
+Create a .env file in the root directory and add your keys:
+
+```bash
+OPENAI_API_KEY=your_openai_key
+FIRECRAWL_API_KEY=your_firecrawl_key
+```
+## Usage
+Run the agent via:
+```bash
+python main.py
+```
