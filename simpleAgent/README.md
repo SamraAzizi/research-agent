@@ -47,3 +47,40 @@ The script does the following:
 - Builds a LangGraph react-style agent using the loaded tools and GPT model.
 - Accepts user input in a loop, passing messages to the agent.
 - Displays the AI's step-by-step response using the tools when needed.
+
+## Usage
+```bash
+python main.py
+```
+
+You will be prompted to chat with the agent. To quit, type:
+
+```bash
+
+quit
+```
+
+## File Structure
+```bash
+.
+├── main.py              # Main script with the async agent loop
+├── .env                 # Contains API keys
+├── pyproject.toml       # uv project file
+├── uv.lock              # Dependency lock file for uv
+└── README.md            # This file
+```
+
+## Requirements
+
+- Python 3.10+
+- Node.js & npm
+- firecrawl-mcp (via npx)
+- uv (Python dependency manager)
+
+## Example Interaction
+
+```bash
+You: Crawl this website and extract all article titles - https://example.com
+
+Agent: Sure! I'll use the Firecrawl tool to scrape the titles from the given site...
+```
