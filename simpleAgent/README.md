@@ -15,7 +15,7 @@ This project is a minimal, interactive AI agent built with LangGraph, LangChain,
 1. **Clone this repository**
 
    ```bash
-   git clone https://github.com/your-username/your-repo-name.git
+   git clone https://github.com/SamraAzizi/research-agent.git
    cd your-repo-name
    ```
 
