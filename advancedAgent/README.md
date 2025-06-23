@@ -56,3 +56,36 @@ Run the agent via:
 ```bash
 python main.py
 ```
+
+You'll see:
+```bash
+Developer Tools Research Agent
+
+
+     Developer Tools Query:
+```
+
+Type Your Developer-realted question like:
+```bash
+backend deployment platforms
+```
+
+To exit, type:
+```bash
+quit
+```
+
+## How It Works
+- Tool Extraction: Finds and scrapes relevant articles, then extracts the names of developer tools using a system prompt.
+- Research Phase: For each tool, it finds official sites, scrapes their pages, and extracts structured metadata like:
+    - Pricing Model
+    - Open Source status
+    - Tech Stack
+    - API availability
+    - Language Support
+    - Integrations
+
+- Recommendation Generation: Using all structured insights, the model gives a short, actionable recommendation tailored to developers.
+
+
+##
